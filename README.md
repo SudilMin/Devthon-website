@@ -1,6 +1,6 @@
-# DevThon 3.0 - Web Development Competition Website
+# Dev{Thon} 3.0 - Web Development Competition Website
 
-## 🎯 About DevThon
+## 🎯 About Dev{Thon}
 
 **DevThon** is an annual premier coding competition that brings together passionate developers, innovators, and tech enthusiasts from across the nation. DevThon 3.0 marks the third edition of this prestigious event, continuing the legacy of fostering innovation, collaboration, and technical excellence in the developer community.
 
