@@ -1,0 +1,30 @@
+{
+  "name": "devthon-backend",
+  "version": "1.0.0",
+  "description": "Backend API for DevThon 3.0 registration system",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "joi": "^17.9.2",
+    "mongoose": "^7.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "keywords": [
+    "devthon",
+    "registration",
+    "mongodb",
+    "express"
+  ],
+  "author": "DevThon Team",
+  "license": "MIT"
+}

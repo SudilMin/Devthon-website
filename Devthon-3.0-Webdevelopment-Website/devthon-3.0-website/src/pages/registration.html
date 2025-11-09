@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev{thon} 3.0 Registration - Team Registration</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../index.html" class="logo-text">Dev{<span class="highlight">thon</span>} 3.0</a>
+            </div>
+            <div class="nav-menu">
+                <a href="../index.html#home" class="nav-link">Home</a>
+                <a href="../index.html#about" class="nav-link">About</a>
+                <a href="../index.html#timeline" class="nav-link">Timeline</a>
+                <a href="../index.html#partners" class="nav-link">Partners</a>
+                <a href="#" class="nav-link register-nav-btn">Register Now</a>
+            </div>
+            <div class="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="registration-main">
+        <div class="container">
+            <!-- Registration Header -->
+            <section class="registration-header">
+                <h1 class="registration-title">
+                    <i class="fas fa-users"></i>
+                    Teams Registration
+                </h1>
+                <div class="registration-description">
+                    <p>The Project <strong>Dev{thon} 3.0</strong> initiated by <strong>Leo Club of the University of Moratuwa</strong> in collaboration with <strong>Leo Club of SLTC</strong> and <strong>Rotaract Club of University of Moratuwa</strong> to improve web development skills. 🚀</p>
+                    <p>There is a dynamic blend of workshops and competition for participants 💻🏆.</p>
+                    
+                    <div class="guideline-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <p><strong>Please read the guideline booklet before filling this.</strong></p>
+                        <a href="#" class="guideline-link">
+                            <i class="fas fa-book"></i>
+                            Dev{thon} 3.0 Guideline Booklet
+                        </a>
+                    </div>
+                    
+                    <div class="email-notice">
+                        <i class="fas fa-envelope"></i>
+                        <p>This form is automatically collecting emails from all respondents.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Registration Form -->
+            <section class="registration-form-section">
+                <form id="team-registration-form" class="registration-form">
+                    
+                    <!-- Section 1: Basic Team Info -->
+                    <div class="form-section" id="section-1">
+                        <div class="section-header">
+                            <h2><span class="section-number">Section 1 of 14</span></h2>
+                            <h3><i class="fas fa-team"></i> Basic Team Information</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="team-name">Team Name *</label>
+                            <input type="text" id="team-name" name="team-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="team-size">No. of Team Members *</label>
+                            <select id="team-size" name="team-size" required>
+                                <option value="">Select team size</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        
+                        <button type="button" class="btn-next" onclick="nextSection(2)">Continue to Team Leader Details</button>
+                    </div>
+
+                    <!-- Section 2-4: Team Leader Details -->
+                    <div class="form-section" id="section-2" style="display: none;">
+                        <div class="section-header">
+                            <h2><span class="section-number">Section 2 of 14</span></h2>
+                            <h3><i class="fas fa-user-tie"></i> Team Leader Details (Member 1)</h3>
+                            <p class="section-description">Please provide complete details for the team leader</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="leader-name">Team Leader's Name *</label>
+                            <input type="text" id="leader-name" name="leader-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="leader-email">Email *</label>
+                            <input type="email" id="leader-email" name="leader-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="leader-whatsapp">WhatsApp Number *</label>
+                            <input type="tel" id="leader-whatsapp" name="leader-whatsapp" required placeholder="+94 77 123 4567">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="leader-nic">NIC No. *</label>
+                            <input type="text" id="leader-nic" name="leader-nic" required placeholder="123456789V or 20001234567">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="leader-institution">School/University or Other *</label>
+                            <input type="text" id="leader-institution" name="leader-institution" required>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevSection(1)">Previous</button>
+                            <button type="button" class="btn-next" onclick="nextSection(3)">Continue</button>
+                        </div>
+                    </div>
+
+                    <!-- Member 2 Details -->
+                    <div class="form-section" id="section-3" style="display: none;">
+                        <div class="section-header">
+                            <h2><span class="section-number">Section 3 of 14</span></h2>
+                            <h3><i class="fas fa-user"></i> Member 2 Details</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member2-name">Name *</label>
+                            <input type="text" id="member2-name" name="member2-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member2-email">Email *</label>
+                            <input type="email" id="member2-email" name="member2-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member2-whatsapp">WhatsApp Number *</label>
+                            <input type="tel" id="member2-whatsapp" name="member2-whatsapp" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member2-nic">NIC No. *</label>
+                            <input type="text" id="member2-nic" name="member2-nic" required>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevSection(2)">Previous</button>
+                            <button type="button" class="btn-next" onclick="nextSection(4)">Continue</button>
+                        </div>
+                    </div>
+
+                    <!-- Member 3 Details -->
+                    <div class="form-section" id="section-4" style="display: none;">
+                        <div class="section-header">
+                            <h2><span class="section-number">Section 4 of 14</span></h2>
+                            <h3><i class="fas fa-user"></i> Member 3 Details</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member3-name">Name *</label>
+                            <input type="text" id="member3-name" name="member3-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member3-email">Email *</label>
+                            <input type="email" id="member3-email" name="member3-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member3-whatsapp">WhatsApp Number *</label>
+                            <input type="tel" id="member3-whatsapp" name="member3-whatsapp" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member3-nic">NIC No. *</label>
+                            <input type="text" id="member3-nic" name="member3-nic" required>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevSection(3)">Previous</button>
+                            <button type="button" class="btn-next member-conditional" onclick="checkTeamSize(5)">Continue</button>
+                        </div>
+                    </div>
+
+                    <!-- Member 4 Details (Conditional) -->
+                    <div class="form-section" id="section-5" style="display: none;">
+                        <div class="section-header">
+                            <h2><span class="section-number">Section 5 of 14</span></h2>
+                            <h3><i class="fas fa-user"></i> Member 4 Details</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member4-name">Name *</label>
+                            <input type="text" id="member4-name" name="member4-name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member4-email">Email *</label>
+                            <input type="email" id="member4-email" name="member4-email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member4-whatsapp">WhatsApp Number *</label>
+                            <input type="tel" id="member4-whatsapp" name="member4-whatsapp">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member4-nic">NIC No. *</label>
+                            <input type="text" id="member4-nic" name="member4-nic">
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevSection(4)">Previous</button>
+                            <button type="button" class="btn-next member-conditional" onclick="checkTeamSize(6)">Continue</button>
+                        </div>
+                    </div>
+
+                    <!-- Member 5 Details (Conditional) -->
+                    <div class="form-section" id="section-6" style="display: none;">
+                        <div class="section-header">
+                            <h2><span class="section-number">Section 6 of 14</span></h2>
+                            <h3><i class="fas fa-user"></i> Member 5 Details</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member5-name">Name *</label>
+                            <input type="text" id="member5-name" name="member5-name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member5-email">Email *</label>
+                            <input type="email" id="member5-email" name="member5-email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member5-whatsapp">WhatsApp Number *</label>
+                            <input type="tel" id="member5-whatsapp" name="member5-whatsapp">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member5-nic">NIC No. *</label>
+                            <input type="text" id="member5-nic" name="member5-nic">
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevSection(5)">Previous</button>
+                            <button type="button" class="btn-next" onclick="nextSection(7)">Continue to Final Step</button>
+                        </div>
+                    </div>
+
+                    <!-- Final Section: Congratulations -->
+                    <div class="form-section" id="section-7" style="display: none;">
+                        <div class="section-header congratulations">
+                            <h2><span class="section-number">Section 14 of 14</span></h2>
+                            <h3><i class="fas fa-trophy"></i> Congratulations!</h3>
+                            <p class="congratulations-text">Keep in touch for the further details of the competition!</p>
+                        </div>
+                        
+                        <div class="whatsapp-section">
+                            <div class="whatsapp-notice">
+                                <i class="fab fa-whatsapp"></i>
+                                <h4>Join Our WhatsApp Group</h4>
+                                <p>📍 All registrants please join this WhatsApp group for updates:</p>
+                                <a href="https://chat.whatsapp.com/KS3gAzOxgKtG0w6KomIWyw" target="_blank" class="whatsapp-link">
+                                    <i class="fab fa-whatsapp"></i>
+                                    Join WhatsApp Group
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevSection(6)">Previous</button>
+                            <button type="submit" class="btn-submit">
+                                <i class="fas fa-paper-plane"></i>
+                                Submit Registration
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                        <div class="progress-text" id="progress-text">Step 1 of 7</div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dev{thon} 3.0</h3>
+                    <p>The future of web development starts here</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#about">About</a></li>
+                        <li><a href="../index.html#timeline">Timeline</a></li>
+                        <li><a href="../index.html#partners">Partners</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Leo Club of University of Moratuwa</p>
+                    <p>info@devthon3.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Dev{thon} 3.0. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/registration.js"></script>
+</body>
+</html>

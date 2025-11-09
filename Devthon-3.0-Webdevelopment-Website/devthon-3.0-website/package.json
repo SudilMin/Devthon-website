@@ -1,0 +1,28 @@
+{
+  "name": "devthon-3.0-website",
+  "version": "1.0.0",
+  "description": "Website for Dev{thon} 3.0 web competition, showcasing competition details and enabling team registrations.",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "live-server src",
+    "build": "echo 'Build process can be defined here'",
+    "test": "echo 'Test process can be defined here'"
+  },
+  "keywords": [
+    "devthon",
+    "competition",
+    "web",
+    "registration"
+  ],
+  "author": "Leo Club of the University of Moratuwa",
+  "license": "MIT",
+  "dependencies": {
+    "live-server": "^1.2.1"
+  },
+  "devDependencies": {},
+  "homepage": "https://devthon-3-0-website.example.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/devthon-3.0-website.git"
+  }
+}

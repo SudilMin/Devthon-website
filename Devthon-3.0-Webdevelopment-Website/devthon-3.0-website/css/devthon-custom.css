@@ -1,0 +1,75 @@
+/* dev{thon} 3.0 Custom Styles */
+
+:root {
+    --devthon-primary: #00ff88;
+    --devthon-secondary: #ff0088;
+    --devthon-accent: #0088ff;
+    --devthon-dark: #0a0a0a;
+    --devthon-gray: #1a1a1a;
+}
+
+/* Enhanced hero section */
+.mil-hero-text p.mil-text-lg {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 600px;
+}
+
+/* Glowing accents for track emojis */
+.mil-timeline-list .mil-head3:first-letter {
+    font-size: 1.5em;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* Animated gradient for main buttons */
+.mil-btn-border:hover {
+    background: linear-gradient(45deg, var(--devthon-primary), var(--devthon-secondary), var(--devthon-accent));
+    background-size: 300% 300%;
+    animation: gradientShift 3s ease infinite;
+    border: none;
+    color: white;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Enhanced counter styling */
+.mil-counter-item h4 .mil-a2 {
+    color: var(--devthon-primary);
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* Custom styling for track cards */
+.mil-service-item:nth-child(1) .mil-head3 { border-left: 3px solid var(--devthon-primary); padding-left: 15px; }
+.mil-service-item:nth-child(2) .mil-head3 { border-left: 3px solid var(--devthon-secondary); padding-left: 15px; }
+.mil-service-item:nth-child(3) .mil-head3 { border-left: 3px solid var(--devthon-accent); padding-left: 15px; }
+.mil-service-item:nth-child(4) .mil-head3 { border-left: 3px solid #ffaa00; padding-left: 15px; }
+.mil-service-item:nth-child(5) .mil-head3 { border-left: 3px solid #00aaff; padding-left: 15px; }
+.mil-service-item:nth-child(6) .mil-head3 { border-left: 3px solid #aa00ff; padding-left: 15px; }
+
+/* Responsive enhancements */
+@media (max-width: 768px) {
+    .mil-hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .mil-hero-text p.mil-text-lg {
+        font-size: 1rem;
+    }
+}
+
+/* Add subtle animation to iconboxes */
+.mil-iconbox:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+/* Enhanced logo hover effect */
+.mil-logo:hover img {
+    filter: brightness(1.2);
+    transition: filter 0.3s ease;
+}
