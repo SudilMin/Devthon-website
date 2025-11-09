@@ -66,5 +66,3 @@ The DevThon 3.0 website serves as the central hub for:
 
 
 **DevThon 3.0** - Where Innovation Meets Excellence 🚀
-
-*Built with ❤️ for the developer community*
