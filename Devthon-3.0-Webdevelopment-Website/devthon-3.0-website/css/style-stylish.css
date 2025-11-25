@@ -463,16 +463,13 @@ a {
     transition: 0.2s cubic-bezier(0, 0, 0.3642, 1);
 }
 
-.mil-text-link.mil-a1:before {
-    background-color: #00FF8C;
+.mil-text-link.mil-a1:before,
+.mil-text-link.mil-a2:before {
+    background-color: #FF2D92;
 }
 
 .mil-text-link.mil-a2 {
-    color: #00FF8C;
-}
-
-.mil-text-link.mil-a2:before {
-    background-color: #00FF8C;
+    color: #FF2D92;
 }
 
 .mil-text-link:hover:before {
@@ -494,16 +491,13 @@ a {
     transition: 0.2s cubic-bezier(0, 0, 0.3642, 1);
 }
 
-.mil-arrow-link.mil-a1:after {
-    color: #00FF8C;
+.mil-arrow-link.mil-a1:after,
+.mil-arrow-link.mil-a2:after {
+    color: #FF2D92;
 }
 
 .mil-arrow-link.mil-a2 {
-    color: #00FF8C;
-}
-
-.mil-arrow-link.mil-a2:after {
-    olor: #00FF8C;
+    color: #FF2D92;
 }
 
 .mil-arrow-link:hover:after {
