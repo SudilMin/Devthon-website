@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const Joi = require('joi');
 
 // Import database connection and models
 const connectDB = require('./config/database');
@@ -52,14 +53,14 @@ app.get('/health', async (req, res) => {
     try {
         let dbStatus = 'Disconnected';
         let totalTeams = teams.length; // Fallback count
-        
+
         if (isDBConnected) {
             dbStatus = 'Connected to MongoDB Atlas';
             totalTeams = await Team.countDocuments();
         }
-        
-        res.json({ 
-            status: 'OK', 
+
+        res.json({
+            status: 'OK',
             message: `DevThon 3.0 API is running`,
             database: dbStatus,
             timestamp: new Date().toISOString(),
@@ -67,8 +68,8 @@ app.get('/health', async (req, res) => {
             mode: isDBConnected ? 'Production (MongoDB)' : 'Test (In-Memory)'
         });
     } catch (error) {
-        res.json({ 
-            status: 'OK', 
+        res.json({
+            status: 'OK',
             message: 'DevThon 3.0 API is running (Database query failed)',
             database: 'Error checking database',
             timestamp: new Date().toISOString(),
@@ -82,9 +83,9 @@ app.get('/health', async (req, res) => {
 app.post('/api/registration/register', async (req, res) => {
     try {
         console.log('Registration request received:', req.body);
-        
+
         const teamData = req.body;
-        
+
         if (isDBConnected) {
             // Use MongoDB for registration
             try {
@@ -108,7 +109,7 @@ app.post('/api/registration/register', async (req, res) => {
                 });
             } catch (mongoError) {
                 console.error('MongoDB registration error:', mongoError);
-                
+
                 // Handle MongoDB validation errors
                 if (mongoError.name === 'ValidationError') {
                     const errors = Object.values(mongoError.errors).map(err => err.message);
@@ -118,7 +119,7 @@ app.post('/api/registration/register', async (req, res) => {
                         errors: errors
                     });
                 }
-                
+
                 // Handle duplicate key error
                 if (mongoError.code === 11000) {
                     return res.status(409).json({
@@ -126,25 +127,64 @@ app.post('/api/registration/register', async (req, res) => {
                         message: 'Team name already exists. Please choose a different name.'
                     });
                 }
-                
+
                 throw mongoError; // Re-throw other errors
             }
         } else {
             // Fallback to in-memory storage
-            
-            // Basic validation
-            if (!teamData.teamName || !teamData.teamLeader || !teamData.projectTitle) {
+
+            // Validation schemas
+            const memberValidation = Joi.object({
+                name: Joi.string().trim().min(2).max(100).required(),
+                email: Joi.string().trim().email().required(),
+                phone: Joi.string().trim().pattern(/^[\+]?[1-9][\d]{0,15}$/).required(),
+                college: Joi.string().trim().min(2).max(200).required(),
+                year: Joi.string().valid('1st Year', '2nd Year', '3rd Year', '4th Year', 'Graduate', 'Post Graduate').required(),
+                skills: Joi.array().items(Joi.string().trim()).max(10).default([])
+            });
+
+            const teamValidation = Joi.object({
+                teamName: Joi.string().trim().min(3).max(50).required(),
+                teamSize: Joi.number().integer().min(1).max(4).required(),
+                teamLeader: memberValidation.required(),
+                members: Joi.array().items(memberValidation).default([]),
+                projectTitle: Joi.string().trim().max(100).required(),
+                projectDescription: Joi.string().trim().min(50).max(1000).required(),
+                techStack: Joi.array().items(Joi.string().trim()).min(1).max(15).required(),
+                projectCategory: Joi.string().valid(
+                    'Web Development', 'Mobile App Development', 'AI/ML', 'Blockchain',
+                    'IoT', 'Game Development', 'Data Science', 'DevOps', 'Cybersecurity',
+                    'AR/VR', 'Other'
+                ).required(),
+                requirements: Joi.string().trim().max(500).allow('').default(''),
+                experience: Joi.string().valid('Beginner', 'Intermediate', 'Advanced').required(),
+                whatsappGroup: Joi.string().trim().pattern(/^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]+$/).allow('').default('')
+            });
+
+            // Validate request body
+            const { error, value } = teamValidation.validate(teamData, { abortEarly: false });
+
+            if (error) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Missing required fields: teamName, teamLeader, and projectTitle are required'
+                    message: 'Validation failed',
+                    errors: error.details.map(detail => detail.message)
+                });
+            }
+
+            // Check team size consistency
+            if (value.members.length !== value.teamSize - 1) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Team size mismatch: Expected ${value.teamSize - 1} additional members, got ${value.members.length}`
                 });
             }
 
             // Check for duplicate team name
-            const existingTeam = teams.find(team => 
-                team.teamName.toLowerCase() === teamData.teamName.toLowerCase()
+            const existingTeam = teams.find(team =>
+                team.teamName.toLowerCase() === value.teamName.toLowerCase()
             );
-            
+
             if (existingTeam) {
                 return res.status(409).json({
                     success: false,
@@ -152,15 +192,36 @@ app.post('/api/registration/register', async (req, res) => {
                 });
             }
 
+            // Check if any email is already registered
+            const allEmails = [value.teamLeader.email, ...value.members.map(m => m.email)];
+            const registeredEmails = [];
+
+            teams.forEach(team => {
+                const teamEmails = [team.teamLeader.email, ...team.members.map(m => m.email)];
+                teamEmails.forEach(email => {
+                    if (allEmails.includes(email)) {
+                        registeredEmails.push(email);
+                    }
+                });
+            });
+
+            if (registeredEmails.length > 0) {
+                return res.status(409).json({
+                    success: false,
+                    message: 'Some team members are already registered',
+                    registeredEmails: [...new Set(registeredEmails)]
+                });
+            }
+
             // Create new team with unique ID
             const newTeam = {
-                ...teamData,
+                ...value,
                 teamId: 'DT3-' + Date.now().toString(36).toUpperCase(),
                 registrationDate: new Date(),
                 status: 'pending',
                 id: teamCounter++
             };
-            
+
             teams.push(newTeam);
 
             console.log(`✅ Team registered in memory: ${newTeam.teamName} (${newTeam.teamId})`);
@@ -196,7 +257,7 @@ app.get('/api/registration/teams', async (req, res) => {
             const teams = await Team.find()
                 .sort({ registrationDate: -1 })
                 .select('teamId teamName teamSize projectTitle registrationDate status');
-            
+
             res.json({
                 success: true,
                 data: {
