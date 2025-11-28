@@ -48,6 +48,12 @@ body {
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 5px;
+    color: #000000;
+}
+
+.form-group select option {
+    color: #000000;
+    background: #ffffff;
 }
 
 .form-group input:focus,

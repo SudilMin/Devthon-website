@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dev{thon} 3.0 Registration - Team Registration</title>
+    <style>
+        /* Hide Register Now button on registration page */
+        #register-button,
+        .register-nav-btn {
+            display: none !important;
+        }
+    </style>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/responsive.css">
@@ -34,7 +41,7 @@
     <main class="registration-main">
         <div class="container">
             <!-- Registration Header -->
-            <section class="registration-header">
+            <section class="registration-header" style="display: none;">
                 <h1 class="registration-title">
                     <i class="fas fa-users"></i>
                     Teams Registration
@@ -66,7 +73,6 @@
                     <!-- Section 1: Basic Team Info -->
                     <div class="form-section" id="section-1">
                         <div class="section-header">
-                            <h2><span class="section-number">Section 1 of 14</span></h2>
                             <h3><i class="fas fa-team"></i> Basic Team Information</h3>
                         </div>
                         
@@ -85,13 +91,12 @@
                             </select>
                         </div>
                         
-                        <button type="button" class="btn-next" onclick="nextSection(2)">Continue to Team Leader Details</button>
+                        <button type="button" class="btn-next" onclick="nextSection(2)">Continue</button>
                     </div>
 
                     <!-- Section 2-4: Team Leader Details -->
                     <div class="form-section" id="section-2" style="display: none;">
                         <div class="section-header">
-                            <h2><span class="section-number">Section 2 of 14</span></h2>
                             <h3><i class="fas fa-user-tie"></i> Team Leader Details (Member 1)</h3>
                             <p class="section-description">Please provide complete details for the team leader</p>
                         </div>
@@ -130,7 +135,6 @@
                     <!-- Member 2 Details -->
                     <div class="form-section" id="section-3" style="display: none;">
                         <div class="section-header">
-                            <h2><span class="section-number">Section 3 of 14</span></h2>
                             <h3><i class="fas fa-user"></i> Member 2 Details</h3>
                         </div>
                         
@@ -163,7 +167,6 @@
                     <!-- Member 3 Details -->
                     <div class="form-section" id="section-4" style="display: none;">
                         <div class="section-header">
-                            <h2><span class="section-number">Section 4 of 14</span></h2>
                             <h3><i class="fas fa-user"></i> Member 3 Details</h3>
                         </div>
                         
@@ -189,15 +192,18 @@
                         
                         <div class="form-navigation">
                             <button type="button" class="btn-prev" onclick="prevSection(3)">Previous</button>
-                            <button type="button" class="btn-next member-conditional" onclick="checkTeamSize(5)">Continue</button>
+                            <button type="button" class="btn-next member-conditional" onclick="checkTeamSize(5)" style="display: none;">Continue</button>
+                            <button type="submit" class="btn-submit team-size-3" style="display: none;">
+                                <i class="fas fa-paper-plane"></i>
+                                Submit Registration
+                            </button>
                         </div>
                     </div>
 
                     <!-- Member 4 Details (Conditional) -->
                     <div class="form-section" id="section-5" style="display: none;">
                         <div class="section-header">
-                            <h2><span class="section-number">Section 5 of 14</span></h2>
-                            <h3><i class="fas fa-user"></i> Member 4 Details</h3>
+                            <h3><i class="fas fa-user"></i> Member 4 Details (Optional)</h3>
                         </div>
                         
                         <div class="form-group">
@@ -222,15 +228,18 @@
                         
                         <div class="form-navigation">
                             <button type="button" class="btn-prev" onclick="prevSection(4)">Previous</button>
-                            <button type="button" class="btn-next member-conditional" onclick="checkTeamSize(6)">Continue</button>
+                            <button type="button" class="btn-next member-conditional" onclick="checkTeamSize(6)" style="display: none;">Continue</button>
+                            <button type="submit" class="btn-submit team-size-4" style="display: none;">
+                                <i class="fas fa-paper-plane"></i>
+                                Submit Registration
+                            </button>
                         </div>
                     </div>
 
                     <!-- Member 5 Details (Conditional) -->
                     <div class="form-section" id="section-6" style="display: none;">
                         <div class="section-header">
-                            <h2><span class="section-number">Section 6 of 14</span></h2>
-                            <h3><i class="fas fa-user"></i> Member 5 Details</h3>
+                            <h3><i class="fas fa-user"></i> Member 5 Details (Optional)</h3>
                         </div>
                         
                         <div class="form-group">
@@ -255,32 +264,6 @@
                         
                         <div class="form-navigation">
                             <button type="button" class="btn-prev" onclick="prevSection(5)">Previous</button>
-                            <button type="button" class="btn-next" onclick="nextSection(7)">Continue to Final Step</button>
-                        </div>
-                    </div>
-
-                    <!-- Final Section: Congratulations -->
-                    <div class="form-section" id="section-7" style="display: none;">
-                        <div class="section-header congratulations">
-                            <h2><span class="section-number">Section 14 of 14</span></h2>
-                            <h3><i class="fas fa-trophy"></i> Congratulations!</h3>
-                            <p class="congratulations-text">Keep in touch for the further details of the competition!</p>
-                        </div>
-                        
-                        <div class="whatsapp-section">
-                            <div class="whatsapp-notice">
-                                <i class="fab fa-whatsapp"></i>
-                                <h4>Join Our WhatsApp Group</h4>
-                                <p>📍 All registrants please join this WhatsApp group for updates:</p>
-                                <a href="https://chat.whatsapp.com/KS3gAzOxgKtG0w6KomIWyw" target="_blank" class="whatsapp-link">
-                                    <i class="fab fa-whatsapp"></i>
-                                    Join WhatsApp Group
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div class="form-navigation">
-                            <button type="button" class="btn-prev" onclick="prevSection(6)">Previous</button>
                             <button type="submit" class="btn-submit">
                                 <i class="fas fa-paper-plane"></i>
                                 Submit Registration
