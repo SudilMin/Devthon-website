@@ -4,7 +4,7 @@
   "description": "Website for Dev{thon} 3.0 web competition, showcasing competition details and enabling team registrations.",
   "main": "src/index.html",
   "scripts": {
-    "start": "live-server src",
+    "start": "live-server --entry-file=src/index.html",
     "build": "echo 'Build process can be defined here'",
     "test": "echo 'Test process can be defined here'"
   },

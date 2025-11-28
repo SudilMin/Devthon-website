@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Registration Data</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗑️ Clear Registration Data</h1>
+        <p>Clear all saved registration data from your browser's localStorage.</p>
+        
+        <div id="current-status" class="status info" style="display: block;">
+            <strong>Current Status:</strong><br>
+            <span id="status-text">Checking...</span>
+        </div>
+        
+        <button class="btn" onclick="clearAllData()">Clear All Data</button>
+        <button class="btn btn-secondary" onclick="goToRegistration()">Go to Registration</button>
+        
+        <div id="result" class="status"></div>
+    </div>
+
+    <script>
+        function checkCurrentStatus() {
+            const isRegistered = localStorage.getItem('devthon_registered');
+            const teamId = localStorage.getItem('devthon_team_id');
+            const teamName = localStorage.getItem('devthon_team_name');
+            
+            const statusText = document.getElementById('status-text');
+            
+            if (isRegistered === 'true') {
+                statusText.innerHTML = `
+                    ✅ Registration exists<br>
+                    Team ID: ${teamId || 'N/A'}<br>
+                    Team Name: ${teamName || 'N/A'}
+                `;
+            } else {
+                statusText.innerHTML = '✨ No registration data found - Ready for fresh registration!';
+            }
+        }
+
+        function clearAllData() {
+            // Clear all localStorage
+            localStorage.clear();
+            
+            // Show success message
+            const result = document.getElementById('result');
+            result.className = 'status success';
+            result.style.display = 'block';
+            result.innerHTML = '✅ All registration data cleared successfully!<br>You can now register again.';
+            
+            // Update status
+            checkCurrentStatus();
+            
+            // Auto redirect to registration after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'pages/registration.html';
+            }, 2000);
+        }
+
+        function goToRegistration() {
+            window.location.href = 'pages/registration.html';
+        }
+
+        // Check status on load
+        checkCurrentStatus();
+    </script>
+</body>
+</html>
