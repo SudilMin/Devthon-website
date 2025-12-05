@@ -269,11 +269,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log('Submitting Registration Data:', registrationData);
             
-            // Always attempt Apps Script first (primary save to Google Sheets)
-            const appsScriptSaved = await sendToGoogleAppsScript(registrationData);
+            // Submit to Google Apps Script (primary save to Google Sheets)
+            const appsScriptResult = await sendToGoogleAppsScript(registrationData);
+            const appsScriptSaved = appsScriptResult.success;
+            const teamId = appsScriptResult.teamId;
             
-            // Submit to backend API (secondary, for local tracking)
-            let backendOk = false;
+            console.log('Google Apps Script saved:', appsScriptSaved);
+            console.log('Generated Team ID:', teamId);
+            
+            // Try to submit to backend API if it's running (optional)
             let result = { success: false };
             try {
                 const response = await fetch('http://localhost:3001/api/registration/register', {
@@ -281,29 +285,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(registrationData)
+                    body: JSON.stringify(registrationData),
+                    signal: AbortSignal.timeout(2000) // 2 second timeout
                 });
-                console.log('Response status:', response.status);
                 if (response.ok) {
-                    backendOk = true;
                     result = await response.json();
                 }
             } catch (err) {
-                console.warn('Backend unreachable, but Apps Script may have saved.');
+                console.log('Backend not available (this is okay)');
             }
             
-            console.log('Response result:', result);
-            console.log('Apps Script saved:', appsScriptSaved);
-            
-            if (appsScriptSaved || (backendOk && result.success)) {
-                // Show success message with team ID and homepage button
-                const teamId = result.data?.teamId || 'DEV-' + String(Date.now() % 10000).padStart(4, '0');
-                const teamName = result.data?.teamName || registrationData.teamName;
-                const regDate = result.data?.registrationDate || new Date().toLocaleString();
+            // Success if Google Sheets saved successfully
+            if (appsScriptSaved) {
+                // Show success message with Team ID
+                const teamName = registrationData.teamName;
+                const regDate = new Date().toLocaleString();
                 
                 showSuccess(`
 <div style="text-align: center; color: white;">
-    <div style="font-size: 42px; margin-bottom: 8px;">🎉</div>
+    <img src="../assets/mascot.png" alt="Dev{thon} Mascot" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid #ffd700; margin-bottom: 16px; object-fit: cover; box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);">
     
     <h1 style="font-size: 26px; margin: 0 0 6px 0; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
         Successfully Registered!
@@ -423,38 +423,69 @@ document.addEventListener('DOMContentLoaded', function() {
             
         } catch (error) {
             console.error('Submission error:', error);
-            // Still try to save directly to Google Sheets
-            const formData = new FormData(e.target);
-            const registrationData = formatRegistrationData(formData);
-            const appsScriptSaved = await sendToGoogleAppsScript(registrationData);
-            if (appsScriptSaved) {
-                showSuccess('✅ Saved to Google Sheets successfully!\n\n<button onclick="window.location.replace(\'../index.html\')" style="background: linear-gradient(135deg, #1e3a5f, #16213e); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 16px; cursor: pointer; margin-top: 15px;">🏠 Go to Home Page</button>');
-            } else {
-                showError('Network error. Please check your connection and try again.');
-                // Reset submit button on network error
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                }
+            showError('An unexpected error occurred. Please try again.\n\nError details: ' + error.message);
+            // Reset submit button on error
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         }
     }
 
     async function sendToGoogleAppsScript(registrationData) {
         try {
-            // Use the same Apps Script URL as backend
+            console.log('Sending to Google Sheets...');
             const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyckPXLJ6-whHkX-Mpw7yQkZlX-CvydZIU2VhW3kSgtgkzs3rbdsVE8C6bS8GE7DoKo/exec';
-            const resp = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+            
+            console.log('Making request to:', GOOGLE_APPS_SCRIPT_URL);
+            console.log('Data:', registrationData);
+            
+            const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(registrationData)
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
+                body: JSON.stringify(registrationData),
+                redirect: 'follow'
             });
-            if (!resp.ok) return false;
-            const data = await resp.json();
-            return !!data.success;
+            
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+            
+            const result = await response.json();
+            console.log('Response data:', result);
+            
+            if (result.success) {
+                return {
+                    success: true,
+                    teamId: result.teamId,
+                    teamName: result.teamName
+                };
+            } else {
+                console.error('Server returned error:', result);
+                return { success: false, error: result.error || result.message };
+            }
+            
         } catch (err) {
-            console.warn('Apps Script save failed:', err);
-            return false;
+            console.error('Apps Script request failed:', err);
+            return { success: false, error: err.message };
+        }
+    }
+    
+    async function getNextTeamId() {
+        try {
+            // Try to fetch current sheet info to determine next ID
+            // Since we can't read from sheets directly, generate a sequential ID
+            // Store last ID in localStorage as fallback
+            const lastId = localStorage.getItem('lastTeamId') || 'DEV-0000';
+            const lastNumber = parseInt(lastId.split('-')[1]) || 0;
+            const nextNumber = lastNumber + 1;
+            const nextId = `DEV-${nextNumber.toString().padStart(4, '0')}`;
+            localStorage.setItem('lastTeamId', nextId);
+            return nextId;
+        } catch (err) {
+            console.error('Error generating Team ID:', err);
+            return `DEV-${Math.floor(Math.random() * 1000).toString().padStart(4, '0')}`;
         }
     }
     
@@ -488,7 +519,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Format complete registration data
+        // Format complete registration data (Team ID will be generated by Google Apps Script)
         const registrationData = {
             teamName: formData.get('team-name'),
             teamSize: teamSize,
@@ -556,4 +587,24 @@ document.addEventListener('DOMContentLoaded', function() {
             window.nextSection(targetSection);
         }
     };
+    
+    // Mobile menu toggle for registration page
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a nav link
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+    }
 });

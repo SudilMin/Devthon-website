@@ -54,9 +54,9 @@
             <div class="sophisticated-logo">
                 <div class="logo-line logo-top"></div>
                 <div class="logo-text">
-                    <span class="logo-dev">DEV</span>
+                    <span class="logo-dev">Dev</span>
                     <span class="logo-separator">{</span>
-                    <span class="logo-thon">THON</span>
+                    <span class="logo-thon">thon</span>
                     <span class="logo-separator">}</span>
                     <span class="logo-version">3.0</span>
                 </div>
@@ -847,7 +847,24 @@
         }
     </style>
 
-    <header class="hero-section">
+    <header id="home" class="hero-section">
+        <!-- Grid overlay -->
+        <div class="grid-overlay"></div>
+        
+        <!-- Animated particles background -->
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        
         <nav class="navbar">
             <div class="nav-container">
                 <div class="nav-logo">
@@ -1011,8 +1028,100 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
-    <script src="js/registration.js"></script>
-    <script src="js/timeline.js"></script>
+    <!-- Preloader Script - Must run immediately -->
+    <script>
+        // Preloader logic - inline to ensure it runs
+        (function() {
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.querySelector('.hero-section');
+            const loadingPercentage = document.getElementById('loading-percentage');
+            const progressFill = document.querySelector('.progress-fill');
+            const statusText = document.getElementById('status-text');
+            
+            if (!preloader) return;
+            
+            console.log('Preloader script started');
+            
+            // Add body class to prevent scrolling
+            document.body.classList.add('preloader-active');
+            
+            // Hide main content initially
+            if (mainContent) {
+                mainContent.style.visibility = 'hidden';
+                mainContent.style.opacity = '0';
+            }
+            
+            // Loading messages
+            const messages = [
+                'INITIALIZING SYSTEM',
+                'LOADING FRAMEWORKS',
+                'ESTABLISHING CONNECTIONS',
+                'PREPARING ENVIRONMENT',
+                'OPTIMIZING PERFORMANCE',
+                'SYSTEM READY'
+            ];
+            
+            let progress = 0;
+            let messageIndex = 0;
+            
+            // Animate loading
+            const interval = setInterval(() => {
+                progress += Math.random() * 12 + 3;
+                
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    if (statusText) statusText.textContent = messages[messages.length - 1];
+                    
+                    setTimeout(() => {
+                        // Fade out preloader
+                        preloader.style.opacity = '0';
+                        
+                        // Show main content
+                        if (mainContent) {
+                            mainContent.style.visibility = 'visible';
+                            mainContent.style.opacity = '1';
+                            mainContent.style.transition = 'opacity 0.8s ease-in-out';
+                        }
+                        
+                        document.body.classList.remove('preloader-active');
+                        
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                            console.log('Preloader removed');
+                        }, 800);
+                    }, 1000);
+                }
+                
+                // Update percentage
+                if (loadingPercentage) {
+                    loadingPercentage.textContent = Math.floor(progress);
+                }
+                
+                // Update progress bar
+                if (progressFill) {
+                    progressFill.style.width = progress + '%';
+                }
+                
+                // Update status message
+                if (statusText) {
+                    const newIndex = Math.min(Math.floor(progress / 20), messages.length - 2);
+                    if (newIndex !== messageIndex && newIndex < messages.length - 1) {
+                        messageIndex = newIndex;
+                        statusText.style.opacity = '0';
+                        setTimeout(() => {
+                            statusText.textContent = messages[messageIndex];
+                            statusText.style.opacity = '1';
+                        }, 150);
+                    }
+                }
+            }, 150);
+        })();
+    </script>
+    
+    <script src="./js/main.js"></script>
+    <script src="./js/registration.js"></script>
+    <script src="./js/timeline.js"></script>
 </body>
 </html>
