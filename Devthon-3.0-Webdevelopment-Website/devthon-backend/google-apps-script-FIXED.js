@@ -60,9 +60,26 @@ function doPost(e) {
       console.log('Members sheet created with headers');
     }
     
+    // Generate sequential Team ID by reading the last one
+    let teamId = 'DEV-0001'; // Default for first team
+    const lastRow = teamsSheet.getLastRow();
+    
+    if (lastRow > 1) { // If there are existing teams (besides header)
+      try {
+        const lastTeamId = teamsSheet.getRange(lastRow, 1).getValue().toString();
+        // Extract number from format DEV-0001
+        const lastNumber = parseInt(lastTeamId.split('-')[1]) || 0;
+        const nextNumber = lastNumber + 1;
+        teamId = `DEV-${nextNumber.toString().padStart(4, '0')}`;
+        console.log(`Generated Team ID: ${teamId} (last was ${lastTeamId})`);
+      } catch (error) {
+        console.log('Could not parse last Team ID, using default');
+      }
+    }
+    
     // Prepare team data
     const teamData = [
-      data.teamId || 'N/A',
+      teamId,
       data.teamName || 'N/A',
       data.teamLeader?.name || 'N/A',
       data.teamLeader?.email || 'N/A',
@@ -79,7 +96,7 @@ function doPost(e) {
     
     // Add team leader to members
     const leaderData = [
-      data.teamId || 'N/A',
+      teamId,
       data.teamLeader?.name || 'N/A',
       data.teamLeader?.email || 'N/A',
       data.teamLeader?.phone || '',
@@ -94,7 +111,7 @@ function doPost(e) {
     if (data.members && Array.isArray(data.members) && data.members.length > 0) {
       data.members.forEach((member, index) => {
         const memberData = [
-          data.teamId || 'N/A',
+          teamId,
           member.name || `Member ${index + 1}`,
           member.email || '',
           member.phone || '',
@@ -111,7 +128,8 @@ function doPost(e) {
     const response = {
       success: true,
       message: 'Registration saved to Google Sheets successfully!',
-      teamId: data.teamId,
+      teamId: teamId,
+      teamName: data.teamName,
       timestamp: new Date().toISOString(),
       sheetsCreated: {
         teams: teamsSheet.getLastRow() - 1,
@@ -143,12 +161,13 @@ function doPost(e) {
 
 // Test GET endpoint
 function doGet() {
-  return ContentService
-    .createTextOutput(JSON.stringify({
-      status: 'DevThon 3.0 Registration Handler is active',
-      message: 'Use POST method to submit registration data',
-      timestamp: new Date().toISOString(),
-      spreadsheetId: '1itUHfhuD0uMVmgLNorMw1Rbhqahjrhwv1_CjbP7dQII'
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
+  const output = ContentService.createTextOutput(JSON.stringify({
+    status: 'DevThon 3.0 Registration Handler is active',
+    message: 'Use POST method to submit registration data',
+    timestamp: new Date().toISOString(),
+    spreadsheetId: '1itUHfhuD0uMVmgLNorMw1Rbhqahjrhwv1_CjbP7dQII'
+  })).setMimeType(ContentService.MimeType.JSON);
+  
+  // Enable CORS
+  return output;
 }
