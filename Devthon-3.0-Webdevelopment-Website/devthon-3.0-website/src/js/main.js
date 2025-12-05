@@ -187,10 +187,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.querySelector('.nav-menu');
 
     if (navToggle && navMenu) {
-        navToggle.addEventListener('click', function() {
+        // Handle both click and touch events
+        const toggleMenu = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
-        });
+        };
+        
+        navToggle.addEventListener('click', toggleMenu);
+        navToggle.addEventListener('touchstart', toggleMenu, { passive: false });
 
         // Close menu when clicking on a nav link
         const navMenuLinks = document.querySelectorAll('.nav-link');
@@ -199,6 +205,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 navMenu.classList.remove('active');
                 navToggle.classList.remove('active');
             });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
         });
     }
     

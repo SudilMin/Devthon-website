@@ -464,6 +464,9 @@ a:hover::after, button:hover::after {
 .nav-toggle {
     display: none;
     flex-direction: column;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 5px;
 }
 
 .nav-toggle .bar {
@@ -473,6 +476,19 @@ a:hover::after, button:hover::after {
     margin: 3px 0;
     transition: 0.3s;
     border-radius: 2px;
+}
+
+/* Hamburger menu animation */
+.nav-toggle.active .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.nav-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
 }
 
 /* ===== HERO SECTION ===== */
@@ -1698,11 +1714,44 @@ main {
 
 @media (max-width: 768px) {
     .nav-menu {
-        display: none;
+        position: fixed;
+        top: 80px;
+        right: -100%;
+        width: 100%;
+        max-width: 300px;
+        height: calc(100vh - 80px);
+        background: rgba(0, 0, 0, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem;
+        gap: 1.5rem;
+        transition: right 0.3s ease;
+        border-left: 2px solid rgba(74, 144, 226, 0.3);
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+    
+    .nav-menu.active {
+        right: 0;
+        display: flex;
     }
     
     .nav-toggle {
         display: flex;
+    }
+    
+    .nav-menu .nav-link {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+    }
+    
+    .nav-menu .register-nav-btn {
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
     }
     
     .timeline::before {
