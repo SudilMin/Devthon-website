@@ -21,13 +21,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none;
 }
 
-/* Show default cursor on touch devices */
-@media (hover: none) and (pointer: coarse) {
+/* Custom cursor only on desktop */
+@media (hover: hover) and (pointer: fine) {
     * {
-        cursor: auto !important;
+        cursor: none;
     }
 }
 
