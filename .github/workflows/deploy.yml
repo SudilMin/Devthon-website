@@ -26,6 +26,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: './Devthon-3.0-Webdevelopment-Website/devthon-3.0-website/src'
+          # Include .nojekyll file to disable Jekyll
 
       - name: Deploy to GitHub Pages
         id: deployment
