@@ -394,6 +394,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Initialize custom cursor
-    initCustomCursor();
+    // Initialize custom cursor only on non-touch devices
+    if (!('ontouchstart' in window) && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        initCustomCursor();
+    } else {
+        // Enable default cursor on touch devices
+        document.body.style.cursor = 'auto';
+        document.querySelectorAll('*').forEach(el => {
+            el.style.cursor = 'auto';
+        });
+    }
 });

@@ -24,10 +24,18 @@
     cursor: none;
 }
 
+/* Show default cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    * {
+        cursor: auto !important;
+    }
+}
+
 /* Advanced Tech Cursor System */
 .custom-cursor {
     position: fixed;
     width: 32px;
+    display: block;
     height: 32px;
     pointer-events: none;
     transform: translate(-50%, -50%);
@@ -110,6 +118,15 @@
     z-index: 99997;
     box-shadow: 0 0 10px #ffffff;
     animation: fadeParticle 0.8s ease-out forwards;
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .custom-cursor,
+    .cursor-follower,
+    .cursor-particle {
+        display: none !important;
+    }
 }
 
 /* Hover States */
