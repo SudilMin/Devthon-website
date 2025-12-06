@@ -303,8 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 showSuccess(`
 <div style="text-align: center; color: white;">
-    <img src="../assets/mascot.png" alt="Dev{thon} Mascot" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid #ffd700; margin-bottom: 16px; object-fit: cover; box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);">
-    
     <h1 style="font-size: 26px; margin: 0 0 6px 0; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
         Successfully Registered!
     </h1>

@@ -37,12 +37,6 @@
         flex-direction: column;
         align-items: flex-start;
     }
-    
-    /* Mascot responsive */
-    .mascot-image {
-        width: 150px;
-        height: 150px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -52,12 +46,6 @@
 
     .footer {
         font-size: 12px;
-    }
-    
-    /* Mascot mobile */
-    .mascot-image {
-        width: 120px;
-        height: 120px;
     }
 
     .button {
